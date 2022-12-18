@@ -27,15 +27,25 @@ export const store = {
         return this.data.tasks[todo_ID];
     },
 
-    setTaskChecked(todoID: string, taskID: string) {
-        const todo_ID = Object.keys(this.data.tasks).filter(el => el === todoID)[0];
-        this.data.tasks[todoID].map(task => task.id === taskID && (task.isDone = !task.isDone));
+    changeTaskStatus(todoID: string, taskID: string, status: boolean) {
+        this.data.tasks = {
+            ...this.data.tasks,
+            todoID: store.data.tasks[todoID].map(task =>
+                task.id === taskID ? { ...task, isDone: status } : task,
+            ),
+        };
     },
 
     addTodo(title: string) {
         const id = `ID_${this.data.todos.length + 1}`;
         this.data.todos = [...this.data.todos, { id, title }];
         this.data.tasks[id] = [];
+    },
+
+    deleteTodo(todoID: string) {
+        const todo_ID = Object.keys(this.data.tasks).filter(el => el === todoID)[0];
+        this.data.todos = this.data.todos.filter(t => t.id !== todo_ID);
+        delete this.data.tasks[todo_ID];
     },
 
     addTask(title: string) {},

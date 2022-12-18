@@ -1,28 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Checkbox from 'expo-checkbox';
-import { globalStyles } from './styles/global';
-import { store } from './styles/store/store';
+import { globalStyles } from './src/styles/global';
+import { store } from './src/store/store';
+import { CloseButton } from './src/components/common/CloseButton';
 import { HideKeyboard } from './src/components/HideKeyboard';
 
 export default function App() {
     const [value, setValue] = useState('');
-    const [isChecked, setChecked] = useState<boolean>();
+    const [show, setShow] = useState('');
 
     const addTodoHandler = () => {
         store.addTodo(value);
         Alert.alert('New todo added');
+        setValue('');
+    };
+
+    const deleteTodoHandler = (id: string, title: string) => {
+        store.deleteTodo(id);
+        Alert.alert(`Todo "${title}" has been deleted`);
+    };
+
+    const changeTaskStatusHandler = (todoID: string, taskID: string, status: boolean) => {
+        store.changeTaskStatus(todoID, taskID, status);
+        console.log('state:', store.data);
     };
 
     return (
         <View style={styles.container}>
+            <Text style={[globalStyles.text, { marginTop: 40, fontSize: 20 }]}>TODOLIST</Text>
             {/*для деактивации фокуса инпута*/}
             <HideKeyboard>
                 <View style={[styles.input]}>
                     <TextInput
                         value={value}
-                        style={[globalStyles.border, globalStyles.text]}
+                        style={[globalStyles.border, globalStyles.text, { paddingHorizontal: 5 }]}
                         onChangeText={(text: string) => setValue(text)}
                     />
                 </View>
@@ -44,27 +57,41 @@ export default function App() {
                         <View key={todo.id} style={[globalStyles.border, styles.todos]}>
                             <Text
                                 key={todo.id}
-                                style={[globalStyles.text, { textAlign: 'center' }]}
+                                style={[globalStyles.text, { textAlign: 'center', fontSize: 18 }]}
                             >
                                 {todo.title}
                             </Text>
-                            {store.getTasks(todo.id).map(task => {
-                                return (
-                                    <View key={task.id} style={styles.taskList}>
-                                        <Text style={[globalStyles.text, styles.taskList.task]}>
-                                            {task.title}
-                                        </Text>
-                                        <Checkbox
-                                            style={styles.checkbox}
-                                            value={task.isDone}
-                                            onChangeValue={(value: boolean) =>
-                                                store.setTaskChecked(todo.id, task.id)
-                                            }
-                                            color={isChecked ? '#4630EB' : undefined}
-                                        />
-                                    </View>
-                                );
-                            })}
+                            <CloseButton
+                                deleteItem={() => deleteTodoHandler(todo.id, todo.title)}
+                            />
+                            <View style={styles.taskContainer}>
+                                {store.getTasks(todo.id).map(task => {
+                                    return (
+                                        <View key={task.id} style={styles.taskList}>
+                                            <Text
+                                                style={[
+                                                    globalStyles.text,
+                                                    styles.taskContainer.task,
+                                                ]}
+                                            >
+                                                {task.title}
+                                            </Text>
+                                            <Checkbox
+                                                style={styles.checkbox}
+                                                value={task.isDone}
+                                                onValueChange={(status: boolean) =>
+                                                    changeTaskStatusHandler(
+                                                        todo.id,
+                                                        task.id,
+                                                        status,
+                                                    )
+                                                }
+                                                color={task.isDone ? '#4630EB' : undefined}
+                                            />
+                                        </View>
+                                    );
+                                })}
+                            </View>
                         </View>
                     );
                 })}
@@ -84,13 +111,13 @@ const styles = StyleSheet.create({
         // fontFamily: 'lucidatypewriter',
     },
     input: {
-        marginTop: 50,
         width: 250,
         padding: 15, //размер зоны дективации фокуса
         fontSize: 16,
     },
 
     todosList: {
+        position: 'relative',
         marginTop: 20,
     },
     todos: {
@@ -98,12 +125,17 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 10,
     },
-    taskList: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+    taskContainer: {
+        marginTop: 20,
+        // height: 200,
+
         task: {
             marginBottom: 5,
         },
+    },
+    taskList: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
 
     checkbox: {},
