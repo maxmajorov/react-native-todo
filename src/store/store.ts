@@ -27,15 +27,6 @@ export const store = {
         return this.data.tasks[todo_ID];
     },
 
-    changeTaskStatus(todoID: string, taskID: string, status: boolean) {
-        this.data.tasks = {
-            ...this.data.tasks,
-            todoID: store.data.tasks[todoID].map(task =>
-                task.id === taskID ? { ...task, isDone: status } : task,
-            ),
-        };
-    },
-
     addTodo(title: string) {
         const id = `ID_${this.data.todos.length + 1}`;
         this.data.todos = [...this.data.todos, { id, title }];
@@ -49,4 +40,24 @@ export const store = {
     },
 
     addTask(title: string) {},
+
+    changeTaskStatus(todoID: string, taskID: string, status: boolean) {
+        this.data.tasks = {
+            ...this.data.tasks,
+            todoID: store.data.tasks[todoID].map(task =>
+                task.id === taskID ? { ...task, isDone: status } : task,
+            ),
+        };
+    },
+
+    changeTaskTitle(todoID: string, taskID: string, title: string) {
+        this.data.tasks = {
+            ...this.data.tasks,
+            todoID: store.data.tasks[todoID].map(task =>
+                task.id === taskID ? { ...task, title } : task,
+            ),
+        };
+
+        console.log(store);
+    },
 };

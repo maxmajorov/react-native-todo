@@ -6,10 +6,10 @@ import { globalStyles } from './src/styles/global';
 import { store } from './src/store/store';
 import { CloseButton } from './src/components/common/CloseButton';
 import { HideKeyboard } from './src/components/HideKeyboard';
+import { EditableSpan } from './src/components/common/EditableSpan';
 
 export default function App() {
     const [value, setValue] = useState('');
-    const [show, setShow] = useState('');
 
     const addTodoHandler = () => {
         store.addTodo(value);
@@ -25,6 +25,10 @@ export default function App() {
     const changeTaskStatusHandler = (todoID: string, taskID: string, status: boolean) => {
         store.changeTaskStatus(todoID, taskID, status);
         console.log('state:', store.data);
+    };
+
+    const changeTaskTitleHandler = (todoID: string, taskID: string, title: string) => {
+        store.changeTaskTitle(todoID, taskID, title);
     };
 
     return (
@@ -68,14 +72,13 @@ export default function App() {
                                 {store.getTasks(todo.id).map(task => {
                                     return (
                                         <View key={task.id} style={styles.taskList}>
-                                            <Text
-                                                style={[
-                                                    globalStyles.text,
-                                                    styles.taskContainer.task,
-                                                ]}
-                                            >
-                                                {task.title}
-                                            </Text>
+                                            <EditableSpan
+                                                value={task.title}
+                                                onChange={(title: string) =>
+                                                    changeTaskTitleHandler(todo.id, task.id, title)
+                                                }
+                                            />
+
                                             <Checkbox
                                                 style={styles.checkbox}
                                                 value={task.isDone}
