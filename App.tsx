@@ -1,25 +1,27 @@
 import { Provider } from 'react-redux';
 import { Main } from './src/app/App';
 import { store } from './src/app/store';
-// import * as Font from 'expo-font';
-// import { useState } from 'react';
+import { useFonts } from 'expo-font';
+import { useCallback } from 'react';
+import { View } from 'react-native';
+
+// SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-    // const [isReady, setIsReady] = useState(false);
+    const [fontsLoaded] = useFonts({
+        'lcd-normal': require('./src/assets/fonts/lcd-normal.ttf'),
+        systematic: require('./src/assets/fonts/systematic.ttf'),
+    });
 
-    // if (!isReady) {
-    //     try {
-    //         let a = async function loadAppAplication() {
-    //             await Font.loadAsync({
-    //                 'roboto-regular': require('./src/assets/fonts/Roboto-Regular.ttf'),
-    //                 'roboto-bold': require('./src/assets/fonts/Roboto-Bold.ttf'),
-    //             });
-    //         };
-    //         console.log(a);
-    //     } finally {
-    //         setIsReady(true);
+    // const onLayoutRootView = useCallback(async () => {
+    //     if (fontsLoaded) {
+    //         await SplashScreen.hideAsync();
     //     }
-    // }
+    // }, [fontsLoaded]);
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     return (
         <Provider store={store}>

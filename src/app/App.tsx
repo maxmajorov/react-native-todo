@@ -1,23 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { AppState, Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Checkbox from 'expo-checkbox';
-import { store } from '../store/store';
 import { globalStyles } from '../styles/global';
 import { HideKeyboard } from '../components/HideKeyboard';
-import { CloseButton } from '../components/common/CloseButton';
-import { EditableSpan } from '../components/common/EditableSpan';
 import {
     addTodolistTC,
+    changeTodolistTitleTC,
     fetchTodolistsTC,
     removeTodolistTC,
     TodolistDomainType,
 } from '../store/todolists-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './store';
-import { addTaskTC, fetchTasksTC, TasksStateType, updateTaskTC } from '../store/tasks-reducer';
-import { AddItemForm } from '../components/common/AddItemForm';
+import {
+    addTaskTC,
+    fetchTasksTC,
+    removeTaskTC,
+    TasksStateType,
+    updateTaskTC,
+} from '../store/tasks-reducer';
 import { Todolist } from '../components/Todolist';
+import { TaskStatuses } from '../api/todolists-api';
 
 export const Main = () => {
     const [value, setValue] = useState('');
@@ -43,13 +46,23 @@ export const Main = () => {
         dispatch(thunk);
     }, []);
 
+    const changeTodolistTitle = useCallback((id: string, title: string) => {
+        const thunk = changeTodolistTitleTC(id, title);
+        dispatch(thunk);
+    }, []);
+
     const addTask = useCallback((title: string, todolistId: string) => {
         console.log(title, todolistId);
         const thunk = addTaskTC(title, todolistId);
         dispatch(thunk);
     }, []);
 
-    const changeTaskStatus = useCallback((id: string, status: boolean, todolistId: string) => {
+    const removeTask = useCallback((id: string, todolistId: string) => {
+        const thunk = removeTaskTC(id, todolistId);
+        dispatch(thunk);
+    }, []);
+
+    const changeTaskStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
         const thunk = updateTaskTC(id, { status }, todolistId);
         dispatch(thunk);
     }, []);
@@ -83,7 +96,7 @@ export const Main = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={[globalStyles.text, styles.heading]}>TODOLIST</Text>
+            <Text style={[globalStyles.text, styles.heading, { fontSize: 40 }]}>TODOLIST</Text>
             {/*для деактивации фокуса инпута*/}
             <HideKeyboard>
                 <View style={[globalStyles.input]}>
@@ -95,7 +108,7 @@ export const Main = () => {
                 </View>
             </HideKeyboard>
             <TouchableOpacity
-                style={[globalStyles.border, globalStyles.button]}
+                style={[globalStyles.border, globalStyles.button, { marginTop: 25 }]}
                 onPress={addTodoHandler}
             >
                 <Text style={[{ color: 'black' }]}>ADD TODO</Text>
@@ -109,12 +122,12 @@ export const Main = () => {
                             <Todolist
                                 todolist={todo}
                                 tasks={allTodolistTasks}
-                                // removeTask={removeTask}
+                                removeTask={removeTask}
                                 addTask={addTask}
                                 changeTaskStatus={changeTaskStatus}
                                 removeTodolist={removeTodolist}
                                 changeTaskTitle={changeTaskTitle}
-                                // changeTodolistTitle={changeTodolistTitle}
+                                changeTodolistTitle={changeTodolistTitle}
                             />
                         </View>
                     );

@@ -16,6 +16,7 @@ export const AddItemForm: React.FC<AddItemFormT> = React.memo(({ addItem }) => {
         if (newTitleTrim.length) {
             addItem(newTitleTrim);
             setNewTitle('');
+            setError('');
         } else setError('Please, input correct task');
     };
 
@@ -49,6 +50,8 @@ const styles = StyleSheet.create({
     },
     error: {
         color: 'red',
+        marginTop: 8,
+        textAlign: 'center',
     },
     button: {
         position: 'absolute',

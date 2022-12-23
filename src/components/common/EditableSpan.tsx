@@ -5,9 +5,10 @@ import { globalStyles } from '../../styles/global';
 type EditableSpanT = {
     value: string;
     onChange: (changedTask: string) => void;
+    style?: object;
 };
 
-export const EditableSpan: FC<EditableSpanT> = ({ value, onChange }): ReactElement => {
+export const EditableSpan: FC<EditableSpanT> = ({ value, onChange, style }): ReactElement => {
     const [editMode, setEditMode] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
 
@@ -22,12 +23,15 @@ export const EditableSpan: FC<EditableSpanT> = ({ value, onChange }): ReactEleme
     };
 
     return editMode ? (
-        <View style={styles.wrapper}>
+        <View style={[styles.wrapper, style]}>
             <TextInput
                 value={title}
-                // onBlur={disactivateEditMode}
                 autoFocus
-                style={[globalStyles.border, globalStyles.text, { paddingHorizontal: 5 }]}
+                style={[
+                    globalStyles.border,
+                    globalStyles.text,
+                    { paddingHorizontal: 5, width: 150 },
+                ]}
                 onChangeText={(text: string) => setTitle(text)}
             />
             <TouchableOpacity
@@ -38,7 +42,7 @@ export const EditableSpan: FC<EditableSpanT> = ({ value, onChange }): ReactEleme
             </TouchableOpacity>
         </View>
     ) : (
-        <Text style={[globalStyles.text, styles.task]} onPress={() => activateEditMode()}>
+        <Text style={[globalStyles.text, styles.task, style]} onPress={() => activateEditMode()}>
             {value}
         </Text>
     );
@@ -47,16 +51,13 @@ export const EditableSpan: FC<EditableSpanT> = ({ value, onChange }): ReactEleme
 const styles = StyleSheet.create({
     wrapper: {
         position: 'relative',
+        flexDirection: 'row',
     },
     task: {
         marginBottom: 5,
     },
 
     button: {
-        position: 'absolute',
-        color: 'black',
-        top: 0,
-        right: -60,
-        padding: 2,
+        marginLeft: 10,
     },
 });

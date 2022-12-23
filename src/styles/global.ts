@@ -7,7 +7,8 @@ export const globalStyles = StyleSheet.create({
     },
     text: {
         color: 'green',
-        fontFamily: '',
+        fontFamily: 'systematic',
+        fontSize: 14,
     },
     button: {
         backgroundColor: 'green',
