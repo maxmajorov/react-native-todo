@@ -7,9 +7,15 @@ export const globalStyles = StyleSheet.create({
     },
     text: {
         color: 'green',
+        fontFamily: '',
     },
     button: {
         backgroundColor: 'green',
         padding: 6,
+    },
+    input: {
+        width: 250,
+        padding: 15, //размер зоны дективации фокуса
+        fontSize: 16,
     },
 });
