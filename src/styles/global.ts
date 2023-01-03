@@ -1,6 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 export const globalStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#003',
+        alignItems: 'center',
+    },
     border: {
         borderColor: 'green',
         borderWidth: 1,

@@ -3,9 +3,13 @@ import { Main } from './src/app/App';
 import { store } from './src/app/store';
 import { useFonts } from 'expo-font';
 import { useCallback } from 'react';
-import { View } from 'react-native';
+import { Button, Text, TouchableOpacity, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { globalStyles } from './src/styles/global';
+import { HomeScreen } from './src/components/HomeScreen';
 
-// SplashScreen.preventAutoHideAsync();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -13,19 +17,18 @@ export default function App() {
         systematic: require('./src/assets/fonts/systematic.ttf'),
     });
 
-    // const onLayoutRootView = useCallback(async () => {
-    //     if (fontsLoaded) {
-    //         await SplashScreen.hideAsync();
-    //     }
-    // }, [fontsLoaded]);
-
     if (!fontsLoaded) {
         return null;
     }
 
     return (
         <Provider store={store}>
-            <Main />
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Home" component={HomeScreen} />
+                    <Stack.Screen name="TodoLists" component={Main} />
+                </Stack.Navigator>
+            </NavigationContainer>
         </Provider>
     );
 }
