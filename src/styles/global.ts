@@ -24,4 +24,7 @@ export const globalStyles = StyleSheet.create({
         padding: 15, //размер зоны дективации фокуса
         fontSize: 16,
     },
+    sysFont: {
+        fontFamily: 'systematic',
+    },
 });

@@ -1,8 +1,8 @@
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Button, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { globalStyles } from '../styles/global';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export const HomeScreen: React.FC<any> = ({ navigation }) => {
+export const TodoItem: React.FC<any> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     return (
         <View

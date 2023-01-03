@@ -21,9 +21,11 @@ import {
 } from '../store/tasks-reducer';
 import { Todolist } from '../components/Todolist';
 import { TaskStatuses } from '../api/todolists-api';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export const Main = () => {
+export const Main: React.FC<any> = ({ navigation }) => {
     const [value, setValue] = useState('');
+    const insets = useSafeAreaInsets();
 
     const appState = useRef(AppState.currentState);
     const [appStateVisible, setAppStateVisible] = useState(appState.current);
@@ -95,11 +97,23 @@ export const Main = () => {
     }, []);
 
     return (
-        <View style={styles.container}>
-            <Text style={[globalStyles.text, styles.heading, { fontSize: 40 }]}>TODOLIST</Text>
+        <View
+            style={[
+                styles.container,
+                {
+                    paddingTop: insets.top,
+                    paddingBottom: insets.bottom,
+                    paddingLeft: insets.left,
+                    paddingRight: insets.right,
+                },
+            ]}
+        >
+            <Text style={[globalStyles.text, { marginTop: 20, fontSize: 20 }]}>
+                Hello, friend!..
+            </Text>
             {/*для деактивации фокуса инпута*/}
             <HideKeyboard>
-                <View style={[globalStyles.input]}>
+                <View style={[globalStyles.input, { marginTop: 20 }]}>
                     <TextInput
                         value={value}
                         style={[globalStyles.border, globalStyles.text, { paddingHorizontal: 5 }]}
@@ -108,13 +122,27 @@ export const Main = () => {
                 </View>
             </HideKeyboard>
             <TouchableOpacity
-                style={[globalStyles.border, globalStyles.button, { marginTop: 25 }]}
+                style={[globalStyles.border, globalStyles.button]}
                 onPress={addTodoHandler}
             >
-                <Text style={[{ color: 'black' }]}>ADD TODO</Text>
+                <Text style={[globalStyles.sysFont, { color: 'black' }]}>ADD TODO</Text>
             </TouchableOpacity>
 
             <View style={styles.todosList}>
+                {todolists.map(td => (
+                    <View key={td.id}>
+                        <TouchableOpacity onPress={() => navigation.navigate('TodoItem' as 'ddd')}>
+                            <View style={[styles.todoItem]}>
+                                <Text style={[globalStyles.text, { fontSize: 20 }]}>
+                                    {td.title}
+                                </Text>
+                                <Text style={[globalStyles.text, { fontSize: 20 }]}>
+                                    {tasks[td.id].length}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                ))}
                 {todolists.map(todo => {
                     let allTodolistTasks = tasks[todo.id];
                     return (
@@ -144,15 +172,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#003',
         alignItems: 'center',
-        // justifyContent: 'center',
-    },
-    heading: {
-        marginTop: 40,
-        fontSize: 20,
     },
 
     todosList: {
-        position: 'relative',
-        marginTop: 20,
+        marginTop: 50,
+    },
+
+    todoItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
     },
 });
