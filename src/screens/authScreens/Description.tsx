@@ -1,8 +1,10 @@
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { globalStyles } from '../styles/global';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { globalStyles } from '../../styles/global';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { HomeProps } from '../../types/navigationTypes';
 
-export const HomeScreen: React.FC<any> = ({ navigation }) => {
+export const Description: React.FC<HomeProps> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     return (
         <View
@@ -18,7 +20,7 @@ export const HomeScreen: React.FC<any> = ({ navigation }) => {
                 },
             ]}
         >
-            <Text style={[globalStyles.text, styles.heading, { fontSize: 50 }]}>TODOLIST</Text>
+            <Text style={[globalStyles.text, { fontSize: 50 }]}>TODOLIST</Text>
             <View>
                 <Text style={[globalStyles.text, { marginTop: 50 }]}>Description</Text>
                 <Text style={[globalStyles.text, { marginTop: 10 }]}>
@@ -52,13 +54,18 @@ export const HomeScreen: React.FC<any> = ({ navigation }) => {
                     GO TO LIST's
                 </Text>
             </TouchableOpacity>
+            <TouchableOpacity
+                style={[globalStyles.border, globalStyles.button, { marginTop: 50 }]}
+                onPress={() =>
+                    navigation.navigate('Home', {
+                        screen: 'Login',
+                    })
+                }
+            >
+                <Text style={[globalStyles.sysFont, { color: 'black', fontSize: 20 }]}>Login</Text>
+            </TouchableOpacity>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    heading: {
-        marginTop: 40,
-        fontSize: 20,
-    },
-});
+const styles = StyleSheet.create({});

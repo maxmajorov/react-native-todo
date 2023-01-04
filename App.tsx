@@ -2,16 +2,14 @@ import { Provider } from 'react-redux';
 import { Main } from './src/app/App';
 import { store } from './src/app/store';
 import { useFonts } from 'expo-font';
-import { useCallback } from 'react';
-import { Button, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { globalStyles } from './src/styles/global';
-import { HomeScreen } from './src/components/HomeScreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { TodoItem } from './src/components/TodoItem';
+import { RootStackParamList } from './src/types/navigationTypes';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HomeScreen } from './src/screens/authScreens/RootHomeScreen';
 
-const Stack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -27,11 +25,11 @@ export default function App() {
         <Provider store={store}>
             <SafeAreaProvider>
                 <NavigationContainer>
-                    <Stack.Navigator>
-                        <Stack.Screen name="Home" component={HomeScreen} />
-                        <Stack.Screen name="TodoLists" component={Main} />
-                        <Stack.Screen name="TodoItem" component={TodoItem} />
-                    </Stack.Navigator>
+                    <RootStack.Navigator initialRouteName="Home">
+                        <RootStack.Screen name="Home" component={HomeScreen} />
+                        <RootStack.Screen name="TodoLists" component={Main} />
+                        <RootStack.Screen name="TodoItem" component={TodoItem} />
+                    </RootStack.Navigator>
                 </NavigationContainer>
             </SafeAreaProvider>
         </Provider>

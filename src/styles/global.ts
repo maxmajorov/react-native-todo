@@ -6,6 +6,11 @@ export const globalStyles = StyleSheet.create({
         backgroundColor: '#003',
         alignItems: 'center',
     },
+    center: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     border: {
         borderColor: 'green',
         borderWidth: 1,

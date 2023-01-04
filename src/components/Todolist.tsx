@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { TaskStatuses, TaskType } from '../api/todolists-api';
 import { fetchTasksTC } from '../store/tasks-reducer';
-import { FilterValuesType, TodolistDomainType } from '../store/todolists-reducer';
+import { TodolistDomainType } from '../store/todolists-reducer';
 import { globalStyles } from '../styles/global';
 import { AddItemForm } from './common/AddItemForm';
 import { CloseButton } from './common/CloseButton';
@@ -23,6 +23,44 @@ type TodoListT = {
 
 export const Todolist: React.FC<TodoListT> = React.memo(({ ...props }) => {
     const dispatch = useDispatch();
+
+    // const addTodoHandler = useCallback(() => {
+    //     const thunk = addTodolistTC(value);
+    //     dispatch(thunk);
+    //     Alert.alert('New todo added');
+    //     setValue('');
+    // }, [dispatch, value]);
+
+    // const removeTodolist = useCallback((id: string) => {
+    //     const thunk = removeTodolistTC(id);
+    //     dispatch(thunk);
+    // }, []);
+
+    // const changeTodolistTitle = useCallback((id: string, title: string) => {
+    //     const thunk = changeTodolistTitleTC(id, title);
+    //     dispatch(thunk);
+    // }, []);
+
+    // const addTask = useCallback((title: string, todolistId: string) => {
+    //     console.log(title, todolistId);
+    //     const thunk = addTaskTC(title, todolistId);
+    //     dispatch(thunk);
+    // }, []);
+
+    // const removeTask = useCallback((id: string, todolistId: string) => {
+    //     const thunk = removeTaskTC(id, todolistId);
+    //     dispatch(thunk);
+    // }, []);
+
+    // const changeTaskStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
+    //     const thunk = updateTaskTC(id, { status }, todolistId);
+    //     dispatch(thunk);
+    // }, []);
+
+    // const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
+    //     const thunk = updateTaskTC(id, { title: newTitle }, todolistId);
+    //     dispatch(thunk);
+    // }, []);
 
     useEffect(() => {
         const thunk = fetchTasksTC(props.todolist.id);

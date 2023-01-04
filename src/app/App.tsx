@@ -131,7 +131,7 @@ export const Main: React.FC<any> = ({ navigation }) => {
             <View style={styles.todosList}>
                 {todolists.map(td => (
                     <View key={td.id}>
-                        <TouchableOpacity onPress={() => navigation.navigate('TodoItem' as 'ddd')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('TodoItem')}>
                             <View style={[styles.todoItem]}>
                                 <Text style={[globalStyles.text, { fontSize: 20 }]}>
                                     {td.title}
